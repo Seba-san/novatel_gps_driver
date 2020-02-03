@@ -387,11 +387,21 @@ namespace novatel_gps_driver
       }
 
       gps_.ApplyVehicleBodyRotation(span_frame_to_ros_frame_);
+      //#################################################
+// Armar la configuracion del gps
 
+      if (gps_.Connect(device_, connection_, opts))
+              {
+                // Connected to device. Begin reading/processing data
+                NODELET_INFO("%s connected to device", hw_id_.c_str());
+              }
+
+      //#################################################
       thread_ = boost::thread(&NovatelGpsNodelet::Spin, this);
       NODELET_INFO("%s initialized", hw_id_.c_str());
-    }
 
+    }
+// Aca termina la ejecucion inicial.
     void SyncCallback(const std_msgs::TimeConstPtr& sync)
     {
       boost::unique_lock<boost::mutex> lock(mutex_);

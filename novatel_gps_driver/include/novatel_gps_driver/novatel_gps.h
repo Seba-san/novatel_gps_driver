@@ -525,6 +525,9 @@ namespace novatel_gps_driver
 
       // Additional Options
       bool apply_vehicle_body_rotation_;
+
+      // Configuracion inicial #seba
+      void IniciarSerial(const std::string& device, NovatelMessageOpts const& opts);
   };
 }
 
