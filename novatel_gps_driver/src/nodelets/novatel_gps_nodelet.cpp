@@ -389,7 +389,7 @@ namespace novatel_gps_driver
       gps_.ApplyVehicleBodyRotation(span_frame_to_ros_frame_);
       //#################################################
 // Armar la configuracion del gps
-
+      gps_.SetSerialBaud(serial_baud_);
       gps_.IniciarSerial(device_);
 
       //#################################################
@@ -672,7 +672,7 @@ namespace novatel_gps_driver
       {
         res.success = false;
       }
-
+      // $" fijarse como hacer para mandar este FRESET antes de empezar
       // Formulate the reset command and send it to the device
       std::string command = "FRESET ";
       command += req.target.length() ? "STANDARD" : req.target;

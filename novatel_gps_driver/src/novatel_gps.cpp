@@ -1528,13 +1528,16 @@ namespace novatel_gps_driver
   	    }
   	    else
   	    {
+  	    	 ROS_WARN("error en la primer etapa");
   	      error_msg_ = serial_.ErrorMsg();
   	    }
   		sleep(2);
-  		std::string command = "com com1,";
-  	  	 command+= serial_baud_; // aca va la configuracion de la velocidad; no se si acepta todas...
-  	  	 command+=",n,8,1,n,off,on\r\n";
+  		std::string command;
+  		command= "com com1,";
+  	  	 command=command + std::to_string(serial_baud_); // aca va la configuracion de la velocidad; no se si acepta todas...
+  	  	 command=command + ",n,8,1,n,off,on\r\n";
   	  	NovatelGps::Write(command);
+  	  ROS_WARN(" mensaje enviado: %s",command.c_str());
   	  	 sleep(2);
   	  	NovatelGps::Disconnect();
   	  	 sleep(2);
@@ -1543,10 +1546,11 @@ namespace novatel_gps_driver
 
   	    	    if (success)
   	    	    {
-  	    	    	 ROS_WARN("%s, segundo mensaje",serial_baud_);
+  	    	    	 ROS_WARN("%d, segundo mensaje",serial_baud_);
   	    	    }
   	    	    else
   	    	    {
+  	    	    	ROS_WARN("error en la segunda etapa");
   	    	      error_msg_ = serial_.ErrorMsg();
   	    	    }
 
