@@ -324,6 +324,9 @@ namespace novatel_gps_driver
       double gpgga_position_sync_tol_; //seconds
       bool wait_for_position_; //if false, do not require position message to make gps fix message
       //added this because position message is sometimes > 1 s late.
+      
+      // Configuracion inicial #seba
+           void IniciarSerial(const std::string& device);
 
     private:
       /**
@@ -525,9 +528,6 @@ namespace novatel_gps_driver
 
       // Additional Options
       bool apply_vehicle_body_rotation_;
-
-      // Configuracion inicial #seba
-      void IniciarSerial(const std::string& device, NovatelMessageOpts const& opts);
   };
 }
 

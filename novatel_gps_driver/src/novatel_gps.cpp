@@ -1497,7 +1497,7 @@ namespace novatel_gps_driver
     return configured;
   }
   // Agregado por seba: mensaje inicial para cambiar la velocidad de comunicación
-  void NovatelGps::IniciarSerial(const std::string& device, NovatelMessageOpts const& opts){
+  void NovatelGps::IniciarSerial( const std::string& device){
     	// Abrir en 9600, esperar, mandar comando de cambio de velocidad, esperar, cerrar, esperar, abrir con nueva vel
   	//char mensaje1[31]="com com1,19200,n,8,1,n,off,on\r\n";
 
@@ -1518,6 +1518,8 @@ namespace novatel_gps_driver
   	    config.low_latency_mode = false;
   	    config.writable = true; // Assume that we can write to this port
 
+
+
   	    bool success = serial_.Open(device, config);
 
   	    if (success)
@@ -1536,7 +1538,19 @@ namespace novatel_gps_driver
   	  	 sleep(2);
   	  	NovatelGps::Disconnect();
   	  	 sleep(2);
-  	  	NovatelGps::CreateSerialConnection(device, opts);
+  	  	config.baud = serial_baud_;
+  	   success = serial_.Open(device, config);
+
+  	    	    if (success)
+  	    	    {
+  	    	    	 ROS_WARN("%s, segundo mensaje",serial_baud_);
+  	    	    }
+  	    	    else
+  	    	    {
+  	    	      error_msg_ = serial_.ErrorMsg();
+  	    	    }
+
+
   }
 
 }

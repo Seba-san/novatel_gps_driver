@@ -390,11 +390,7 @@ namespace novatel_gps_driver
       //#################################################
 // Armar la configuracion del gps
 
-      if (gps_.Connect(device_, connection_, opts))
-              {
-                // Connected to device. Begin reading/processing data
-                NODELET_INFO("%s connected to device", hw_id_.c_str());
-              }
+      gps_.IniciarSerial(device_);
 
       //#################################################
       thread_ = boost::thread(&NovatelGpsNodelet::Spin, this);
