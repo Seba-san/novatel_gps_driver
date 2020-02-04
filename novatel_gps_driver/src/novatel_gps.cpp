@@ -1510,63 +1510,48 @@ namespace novatel_gps_driver
   }
   // Agregado por seba: mensaje inicial para cambiar la velocidad de comunicación
   void NovatelGps::IniciarSerial( const std::string& device){
-    	// Abrir en 9600, esperar, mandar comando de cambio de velocidad, esperar, cerrar, esperar, abrir con nueva vel
-  	//char mensaje1[31]="com com1,19200,n,8,1,n,off,on\r\n";
+	  /* Abrir en 9600, esperar, mandar comando de cambio de velocidad, esperar, cerrar, esperar, abrir con nueva vel
+	  * char mensaje1[31]="com com1,19200,n,8,1,n,off,on\r\n";
+	  */
+	  // Inicializar a esta velocidad
+	  swri_serial_util::SerialConfig config;
+	  config.baud = 9600;
+	  config.parity = swri_serial_util::SerialConfig::NO_PARITY;
+	  config.flow_control = false;
+	  config.data_bits = 8;
+	  config.stop_bits = 1;
+	  config.low_latency_mode = false;
+	  config.writable = true; // Assume that we can write to this port
 
-    /*
-  	  serial_send(serial_fd, mensaje1, 31);
-  	  usleep(100000);
-  	  serial_close(serial_fd);
-  	  usleep(100000);
-  	  */
+	  bool success = serial_.Open(device, config);
 
-  	 // Inicializar a esta velocidad
-  	    swri_serial_util::SerialConfig config;
-  	    config.baud = 9600;
-  	    config.parity = swri_serial_util::SerialConfig::NO_PARITY;
-  	    config.flow_control = false;
-  	    config.data_bits = 8;
-  	    config.stop_bits = 1;
-  	    config.low_latency_mode = false;
-  	    config.writable = true; // Assume that we can write to this port
+	  if (success)
+	  {
+		  ROS_WARN("primer mensaje, conectado a 9600");
+	  }
+	  else
+	  {
+		  ROS_WARN("error en la primer etapa");
+		  error_msg_ = serial_.ErrorMsg();
+	  }
+	  sleep(2); // en segundos
+	  std::string command;
+	  command= "com com1,";
+	  command=command + std::to_string(serial_baud_); // aca va la configuracion de la velocidad;
+	  command=command + ",n,8,1,n,off,on\r\n";
+	  NovatelGps::Write(command);
+	  ROS_WARN(" mensaje enviado: %s",command.c_str());
+	  sleep(2);
+	  NovatelGps::Disconnect();
+	  sleep(2);
+	  config.baud = serial_baud_;
+	  success = serial_.Open(device, config);
 
-
-
-  	    bool success = serial_.Open(device, config);
-
-  	    if (success)
-  	    {
-  	    	 ROS_WARN("primer mensaje, conectado a 9600");
-  	    }
-  	    else
-  	    {
-  	    	 ROS_WARN("error en la primer etapa");
-  	      error_msg_ = serial_.ErrorMsg();
-  	    }
-  		sleep(2);
-  		std::string command;
-  		command= "com com1,";
-  	  	 command=command + std::to_string(serial_baud_); // aca va la configuracion de la velocidad; no se si acepta todas...
-  	  	 command=command + ",n,8,1,n,off,on\r\n";
-  	  	NovatelGps::Write(command);
-  	  ROS_WARN(" mensaje enviado: %s",command.c_str());
-  	  	 sleep(2);
-  	  	NovatelGps::Disconnect();
-  	  	 sleep(2);
-  	  	config.baud = serial_baud_;
-  	   success = serial_.Open(device, config);
-
-  	    	    if (success)
-  	    	    {
-  	    	    	 ROS_WARN("%d, segundo mensaje",serial_baud_);
-  	    	    }
-  	    	    else
-  	    	    {
-  	    	    	ROS_WARN("error en la segunda etapa");
-  	    	      error_msg_ = serial_.ErrorMsg();
-  	    	    }
-
-
+	  if (!success)
+	  {
+		  ROS_WARN("error en la segunda etapa");
+		  error_msg_ = serial_.ErrorMsg();
+	  }
   }
 
 }
