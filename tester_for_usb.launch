@@ -7,11 +7,11 @@
       verbose: true
       connection_type: serial
       device: /dev/ttyUSB0
-      publish_novatel_positions: true
+      publish_novatel_xyz_positions: true
       frame_id: /gps
       serial_baud: 115200
       expected_rate: 3
-      polling_period: 0.5
+      polling_period: 0.1
       reconnect_delay_s: 2
     </rosparam>
   </node>

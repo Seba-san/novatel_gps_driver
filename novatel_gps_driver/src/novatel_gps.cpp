@@ -1426,6 +1426,10 @@ namespace novatel_gps_driver
       {
         ROS_ERROR("Failed to send command: %s", command.c_str());
       }
+      else
+      {
+    	  ROS_WARN("Comando enviado: %s", command.c_str());
+      }
       return written == (int32_t)command.length();
     }
     else if (connection_ == TCP || connection_ == UDP)
@@ -1467,8 +1471,15 @@ namespace novatel_gps_driver
 
   bool NovatelGps::Configure(NovatelMessageOpts const& opts)
   {
+	  /*
+	   * envia los siguientes comandos condicionados a que el comando write funcione bien.
+	   * el comando write devuelve un bool
+	   */
     bool configured = true;
-    configured = configured && Write("unlogall THISPORT_ALL\r\n");
+    configured = configured && Write("unlogall THISPORT_ALL\r\n"); // pag. 216 del manual
+    /*
+     * Remove all logs from logging control for  All virtual ports for the current port
+     */
 
     if (apply_vehicle_body_rotation_)
     {
@@ -1488,11 +1499,12 @@ namespace novatel_gps_driver
       {
       	command << "log " << option.first << " ontime " << option.second << "\r\n";
       }
-      configured = configured && Write(command.str());
+      configured = configured && Write(command.str()); // Envia todas opciones cargadas en opt (string, double)
     }
 
     // Log the IMU data once to get the IMU type
-    configured = configured && Write("log rawimuxa\r\n");
+    // lo comento porque este gps no trae IMU.
+  //  configured = configured && Write("log rawimuxa\r\n");
 
     return configured;
   }
