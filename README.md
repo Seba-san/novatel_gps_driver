@@ -16,13 +16,13 @@ Features:
 - Supports a variety of common NovAtel logs
 - Easy to add support for more log types
 - Supports ASCII and binary-format NovAtel logs
-- Can synchronize `GPGGA`, `GPRMC`, and `BESTPOS` logs together in order to produce 
+- Can synchronize `GPGGA`, `GPRMC`, and `BESTPOS` logs together in order to produce
 [gps_common/GPSFix](http://docs.ros.org/kinetic/api/gps_common/html/msg/GPSFix.html) messages
 - Compatible with OEM4, OEM6, and OEM7 receivers
 - Can produce IMU data from receives with SPAN support
 
 It has been tested primarily on NovAtel OEM628 receivers, but it has been used with
-various OEM4, OEM6, and OEM7 devices. Please let 
+various OEM4, OEM6, and OEM7 devices. Please let
 [the maintainers](mailto:preed@swri.org,kkozak@swri.org) know of your success
 or failure in using this with other devices so we can update this page appropriately.
 
@@ -67,7 +67,7 @@ Then create a `.launch` file and configure it as desired:
 </launch>
 ```
 
-`gps_common/GPSFix` messages will always be published, but by default, other message 
+`gps_common/GPSFix` messages will always be published, but by default, other message
 types are not.  See the config parameters for a list of which other message types can be
 enabled.
 
@@ -80,7 +80,7 @@ Packages
     at http://docs.novatel.com/OEM7/Content/Logs/Log_Reference.htm .
 2. ### `novatel_gps_driver`
 
-    A C++ library with an accompanying ROS nodelet and node that can connect to 
+    A C++ library with an accompanying ROS nodelet and node that can connect to
     a NovAtel device over a serial, TCP, or UDP connection and translate NovAtel
     logs into ROS messages.
 
@@ -98,7 +98,7 @@ Nodelets
                 - If the host is omitted, it will listen for connections on the specified port.
                 - If the port is omitted, `3001` will be used as the default for TCP connections
                 and `3002` as the default for UDP connections.
-            - For `pcap` connections, the location of a `.pcap` capture file. 
+            - For `pcap` connections, the location of a `.pcap` capture file.
             Note that the node will exit automatically after finishing playback.
             - Default: Empty
         - `frame_id`: ROS TF frame to place in the header of published messages.
@@ -112,8 +112,8 @@ Nodelets
         - `imu_rate`: Desired rate in Hz for IMU messages.
             - This is set as the rate for `CORRIMUDATA` logs.
             - Default: `100`
-        - `polling_period`: Desired period between GPS messages. 
-            - This will be set as the period for `GPGGA`, `GPRMC`, `GPGSA`, `BESTPOS`, 
+        - `polling_period`: Desired period between GPS messages.
+            - This will be set as the period for `GPGGA`, `GPRMC`, `GPGSA`, `BESTPOS`,
             and `BESTVEL` logs.
             - Default: `0.05` (20 Hz)
         - `publish_clocksteering`: `true` to publish novatel_gps_msgs/ClockSteering messages.
@@ -163,7 +163,7 @@ Nodelets
         - `wait_for_position`: `true` in order to wait for BESTPOS logs before publishing GPSFix messages.
             - Default: `false`
     2. **ROS Topic Subscriptions**
-        - `/gps_sync` *(std_msgs/Time)*: *(optional)* Timestamped sync pulses from a DIO module. 
+        - `/gps_sync` *(std_msgs/Time)*: *(optional)* Timestamped sync pulses from a DIO module.
     These are used to improve the accuracy of the time stamps of the messages published.
     3. **ROS Topic Publications**
         - `/bestpos` *(novatel_gps_msgs/NovatelPosition)*: [BESTPOS](http://docs.novatel.com/OEM7/Content/Logs/BESTPOS.htm) logs
@@ -202,7 +202,7 @@ Do you need support for a new log type?  Follow these steps:
 can parse the log and return the appropriate ROS message.
 4. Modify the `novatel_gps_driver::NovatelGps` class:
     1. Add an instance of your parser, a buffer for storing parsed messages, and a method for retrieving them.
-    2. Modify the `NovatelGps::ParseBinaryMessage`, `NovatelGps::ParseNovatelSentence`, 
+    2. Modify the `NovatelGps::ParseBinaryMessage`, `NovatelGps::ParseNovatelSentence`,
     or `NovatelGps::ParseNmeaSentence` methods to use your parser to parse the new message type
     and store it in the appropriate buffer.
 5. Modify the `novatel_gps_driver::NovatelGpsNodelet` class:
@@ -211,3 +211,8 @@ can parse the log and return the appropriate ROS message.
     3. Modify `NovatelGpsNodelet::CheckDeviceForData` to retrieve messages from
     the appropriate buffer and publish them.
 6. Add a new unit test to `novatel_gps_driver/tests/parser_tests.cpp` to test your parser.
+
+
+Cambios realizados
+---------------
+Se adapto el programa al dispositivo NovatelPropackV3.

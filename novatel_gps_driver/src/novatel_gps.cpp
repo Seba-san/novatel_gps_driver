@@ -1540,7 +1540,7 @@ namespace novatel_gps_driver
 	  command=command + std::to_string(serial_baud_); // aca va la configuracion de la velocidad;
 	  command=command + ",n,8,1,n,off,on\r\n";
 	  NovatelGps::Write(command);
-	  ROS_WARN(" mensaje enviado: %s",command.c_str());
+	  //ROS_WARN(" mensaje enviado: %s",command.c_str());
 	  sleep(2);
 	  NovatelGps::Disconnect();
 	  sleep(2);
@@ -1555,4 +1555,3 @@ namespace novatel_gps_driver
   }
 
 }
-
