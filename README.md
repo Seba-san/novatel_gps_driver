@@ -45,7 +45,10 @@ cd novatel
 catkin init
 catkin config --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
 cd src
-git clone https://github.com/swri-robotics/novatel_gps_driver
+git clone https://github.com/Seba-san/novatel_gps_driver.git
+```
+Cuidado con el siguiente comando, puede instalar cosas que no necesitas (si  se comparte el workspace)
+```bash
 rosdep install . --from-paths -i
 catkin build
 ```
