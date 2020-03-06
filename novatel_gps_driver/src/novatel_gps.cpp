@@ -1552,6 +1552,13 @@ namespace novatel_gps_driver
 		  ROS_WARN("error en la segunda etapa");
 		  error_msg_ = serial_.ErrorMsg();
 	  }
+    // Configuracion del puerto COM2 para recibir señal del RTK
+    COM_rb="com2"
+    command= "interfacemode ";
+    command=command + COM_rb;
+    command=command + " rtcm none\r\n";
+    NovatelGps::Write(command);
+    sleep(2);
   }
 
 }
