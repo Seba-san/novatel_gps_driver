@@ -1553,7 +1553,7 @@ namespace novatel_gps_driver
 		  error_msg_ = serial_.ErrorMsg();
 	  }
     // Configuracion del puerto COM2 para recibir señal del RTK
-    COM_rb="com2"
+    COM_rb="com2";
     command= "interfacemode ";
     command=command + COM_rb;
     command=command + " rtcm none\r\n";
