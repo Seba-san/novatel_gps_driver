@@ -1535,7 +1535,7 @@ namespace novatel_gps_driver
 		  error_msg_ = serial_.ErrorMsg();
 	  }
 	  sleep(2); // en segundos
-	  std::string command;
+	  std::string command,COM_rb;
 	  command= "com com1,";
 	  command=command + std::to_string(serial_baud_); // aca va la configuracion de la velocidad;
 	  command=command + ",n,8,1,n,off,on\r\n";
